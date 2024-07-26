@@ -9,8 +9,14 @@ import { X } from "@phosphor-icons/react";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
+const urlRegExp = new RegExp("https\:\/\/(www\.)?(instagram\.com|threads\.net|x\.com|twitter\.com)\/.*");
+
 const getTabClassName = (active: boolean) => {
   return `grow text-center px-2 sm:px-4 py-1 transition-colors ${active ? "bg-[#313131] cursor-default" : "hover:bg-slate-400"}`;
+}
+
+const validateUrl = (url: string) => {
+  return urlRegExp.test(url);
 }
 
 type HeroProps = {
@@ -29,6 +35,14 @@ const Hero: FC<HeroProps> = ({ selectedPlatform }) => {
 
   const handleSubmit = (e: any) => {
     e.preventDefault();
+    if (!validateUrl(input)) {
+      if (selectedPlatform) {
+        alert(`Please enter a valid ${capitalize} URL!`);
+      } else {
+        alert("Please enter a valid Instagram/Threads/Twitter URL!")
+      }
+      return false;
+    }
     const url = selectedPlatform ? new URL(API_URL + "/" + selectedPlatform) : new URL(API_URL + "/auto");
     url.searchParams.append("url", input);
     setIsLoading(true);
