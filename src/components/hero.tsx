@@ -133,7 +133,7 @@ const Hero: FC<HeroProps> = ({ selectedPlatform }) => {
                 disabled:opacity-50 disabled:hover:bg-slate-400 disabled:hover:cursor-not-allowed
                 flex justify-center items-center gap-2`}
               type="submit"
-              disabled={isLoading}
+              disabled={isLoading || input === ""}
             >
               {isLoading ? (
                 <>
